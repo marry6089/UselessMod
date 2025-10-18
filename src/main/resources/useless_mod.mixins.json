@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.sorrowmist.useless.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "useless.refmap.json",
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+    "TileComponentEjectorMixin"
+  ]
+}
