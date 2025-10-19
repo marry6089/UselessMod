@@ -1,4 +1,3 @@
-
 package com.sorrowmist.useless;
 
 import com.google.gson.Gson;
@@ -18,10 +17,10 @@ public class Config {
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
-    // 修改字段名称为中文描述
-    public String 边框方块 = "mekanismadditions:aqua_plastic_glow";
-    public String 填充方块 = "mekanismadditions:white_plastic_glow";
-    public String 中心方块 = "mekanismadditions:light_gray_plastic_glow";
+    // 在字段名中包含提示信息
+    public String 边框方块_若不存在则使用蓝色羊毛 = "useless_mod:aqua_glow_plastic";
+    public String 填充方块_若不存在则使用白色羊毛 = "useless_mod:white_glow_plastic";
+    public String 中心方块_若不存在则使用灰色羊毛 = "useless_mod:light_gray_glow_plastic";
 
     public static Config load(Path configPath) {
         File configFile = configPath.resolve("uselessdim_config.json").toFile();
@@ -56,24 +55,24 @@ public class Config {
         }
     }
 
-    // 获取边框方块（原来的light_blue_plastic）
+    // 获取边框方块
     public Block getBorderBlock() {
-        return getBlockFromString(边框方块, Blocks.BLUE_WOOL);
+        return getBlockFromString(边框方块_若不存在则使用蓝色羊毛, Blocks.BLUE_WOOL);
     }
 
-    // 获取填充方块（原来的white_plastic）
+    // 获取填充方块
     public Block getFillBlock() {
-        return getBlockFromString(填充方块, Blocks.WHITE_WOOL);
+        return getBlockFromString(填充方块_若不存在则使用白色羊毛, Blocks.WHITE_WOOL);
     }
 
-    // 获取中心方块（原来的light_gray_plastic）
+    // 获取中心方块
     public Block getCenterBlock() {
-        return getBlockFromString(中心方块, Blocks.GRAY_WOOL);
+        return getBlockFromString(中心方块_若不存在则使用灰色羊毛, Blocks.GRAY_WOOL);
     }
 
     private Block getBlockFromString(String blockId, Block fallback) {
         try {
-            ResourceLocation location =ResourceLocation.parse(blockId);
+            ResourceLocation location = ResourceLocation.parse(blockId);
             Block block = BuiltInRegistries.BLOCK.get(location);
             return block != Blocks.AIR ? block : fallback;
         } catch (Exception e) {

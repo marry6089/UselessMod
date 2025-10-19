@@ -1,6 +1,7 @@
 package com.sorrowmist.useless.inventories;
 
 import com.sorrowmist.useless.UselessMod;
+import com.sorrowmist.useless.blocks.GlowPlasticBlock;
 import com.sorrowmist.useless.blocks.OreGeneratorBlock;
 import com.sorrowmist.useless.blocks.TeleportBlock;
 import com.sorrowmist.useless.blocks.TeleportBlock2;
@@ -8,6 +9,7 @@ import com.sorrowmist.useless.items.EndlessBeafItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -30,6 +32,9 @@ public class UselessTab {
                         pOutput.accept(TeleportBlock.TELEPORT_BLOCK_ITEM.get());
                         pOutput.accept(OreGeneratorBlock.ORE_GENERATOR_BLOCK_ITEM.get());
                         pOutput.accept(TeleportBlock2.TELEPORT_BLOCK_ITEM_2.get());
+                        for (RegistryObject<Item> item : GlowPlasticBlock.GLOW_PLASTIC_BLOCK_ITEMS.values()) {
+                            pOutput.accept(item.get());
+                        }
                     }))
                     .build());
 }

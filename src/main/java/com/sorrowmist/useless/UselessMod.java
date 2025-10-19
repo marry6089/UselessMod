@@ -1,6 +1,7 @@
 package com.sorrowmist.useless;
 
 import com.mojang.logging.LogUtils;
+import com.sorrowmist.useless.blocks.GlowPlasticBlock;
 import com.sorrowmist.useless.blocks.OreGeneratorBlock;
 import com.sorrowmist.useless.blocks.TeleportBlock;
 import com.sorrowmist.useless.blocks.TeleportBlock2;
@@ -21,6 +22,9 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Mixins;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(UselessMod.MOD_ID)
 public class UselessMod
@@ -30,6 +34,8 @@ public class UselessMod
     // Directly reference a slf4j logger
     public static final Logger LOGGER = LogUtils.getLogger();
 
+    public static Config CONFIG;
+
 
     public UselessMod(FMLJavaModLoadingContext context)
     {
@@ -37,6 +43,8 @@ public class UselessMod
         //IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         initAll(modEventBus);
+        initializeConfig();
+
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
@@ -48,6 +56,18 @@ public class UselessMod
         Mixins.addConfiguration("useless_mod.mixins.json");
 
     }
+
+    private void initializeConfig() {
+        try {
+            // 获取配置目录路径
+            Path configDir = Paths.get("config");
+            // 加载或创建配置文件
+            CONFIG = Config.load(configDir);
+            LOGGER.info("配置文件已加载: {}", configDir.resolve("uselessdim_config.json"));
+        } catch (Exception e) {
+            LOGGER.error("加载配置文件时出错", e);
+        }
+    }
     public void initAll(IEventBus iEventBus){
         EndlessBeafItem.init(iEventBus);
         UselessTab.init(iEventBus);
@@ -56,6 +76,7 @@ public class UselessMod
         OreGeneratorBlock.init(iEventBus);
         UselessDimension2.init(iEventBus);
         TeleportBlock2.init(iEventBus);
+        GlowPlasticBlock.init(iEventBus);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {}
