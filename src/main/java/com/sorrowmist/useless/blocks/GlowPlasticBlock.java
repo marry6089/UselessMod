@@ -29,7 +29,8 @@ public class GlowPlasticBlock extends Block implements IColoredBlock {
     public GlowPlasticBlock(EnumColor color, UnaryOperator<Properties> propertyModifier) {
         super(applyLightLevelAdjustments(propertyModifier.apply(Properties.of()
                 .mapColor(color.getMapColor())
-                .strength(5F, 6F))));
+                .strength(5F, 6F)
+                .requiresCorrectToolForDrops())));
         this.color = color;
     }
 

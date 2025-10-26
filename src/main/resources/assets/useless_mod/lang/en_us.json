@@ -1,5 +1,5 @@
 {
-  "item.useless_mod.endless_beaf_item": "永恒牛排",
+  "item.useless_mod.endless_beaf_item": "永恒牛排万能工具",
   "block.useless_mod.teleport_block": "偶数维度传送方块",
   "block.useless_mod.ore_generator_block": "矿石生成器",
   "block.useless_mod.teleport_block_2": "奇数维度传送方块",
@@ -21,5 +21,24 @@
   "block.useless_mod.orange_glow_plastic": "橙色荧光塑料",
   "block.useless_mod.white_glow_plastic": "白色荧光塑料",
   "block.useless_mod.dark_red_glow_plastic": "深红色荧光塑料",
-  "block.useless_mod.aqua_glow_plastic": "水色荧光塑料"
+  "block.useless_mod.aqua_glow_plastic": "水色荧光塑料",
+  "key.category.useless_mod.useless": "无用模组",
+  "key.useless_mod.switch_silk_touch": "切换到精准采集",
+  "key.useless_mod.switch_fortune": "切换到时运",
+  "tooltip.useless_mod.silk_touch_mode": "模式：精准采集",
+  "tooltip.useless_mod.fortune_mode": "模式：时运",
+  "tooltip.useless_mod.silk_touch_level": "精准采集 %s",
+  "tooltip.useless_mod.fortune_level": "时运 %s",
+  "tooltip.useless_mod.external_enchantment": "(受外部附魔增强)",
+  "tooltip.useless_mod.switch_enchantment": "使用 PAGE_UP/PAGE_DOWN 切换模式",
+  "tooltip.useless_mod.wrench_function": "可作为扳手使用（兼容其他模组）",
+  "tooltip.useless_mod.fast_break_plastic": "Shift + 右键点击快速破坏塑料方块",
+  "item.useless_mod.endless_beaf_item.silk_touch": "永恒牛排万能工具（精准采集）",
+  "item.useless_mod.endless_beaf_item.fortune": "永恒牛排万能工具（时运）",
+  "text.useless_mod.silk_touch": "精准采集",
+  "text.useless_mod.fortune": "时运",
+  "message.useless_mod.switched_to_silk_touch": "§b已切换到精准采集模式",
+  "message.useless_mod.switched_to_fortune": "§6已切换到时运模式",
+  "message.useless_mod.festive_triggered": "§6战利品大爆发！",
+  "tooltip.useless_mod.festive_affix": "5% 概率在击杀时触发战利品大爆发"
 }

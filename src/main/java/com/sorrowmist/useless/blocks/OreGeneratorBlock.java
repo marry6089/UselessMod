@@ -48,7 +48,8 @@ public class OreGeneratorBlock extends Block implements EntityBlock {
     // 方块构造函数
     public OreGeneratorBlock() {
         super(BlockBehaviour.Properties.of()
-                .strength(3.0F, 32768.0F));
+                .strength(3.0F, 32768.0F)
+                .requiresCorrectToolForDrops());
     }
 
 
@@ -117,6 +118,19 @@ public class OreGeneratorBlock extends Block implements EntityBlock {
             }
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (!state.is(newState.getBlock())) {
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if (blockEntity instanceof OreGeneratorBlockEntity generator) {
+                // 掉落方块实体中的物品
+                generator.drops();
+            }
+        }
+        super.onRemove(state, level, pos, newState, isMoving);
     }
 
 

@@ -21,8 +21,8 @@ public class TileComponentEjectorMixin {
             at = @At("RETURN")
     )
     private void modifyTickDelay(CallbackInfo ci) {
-        // 在方法末尾将 tickDelay 设置为 1
-        this.tickDelay = 1;
+        // 在方法末尾将 tickDelay 设置为 0
+        this.tickDelay = 0;
     }
 
 }

@@ -1,12 +1,10 @@
 package com.sorrowmist.useless;
 
 import com.mojang.logging.LogUtils;
-import com.sorrowmist.useless.blocks.GlowPlasticBlock;
-import com.sorrowmist.useless.blocks.OreGeneratorBlock;
-import com.sorrowmist.useless.blocks.TeleportBlock;
-import com.sorrowmist.useless.blocks.TeleportBlock2;
+import com.sorrowmist.useless.blocks.*;
 import com.sorrowmist.useless.inventories.UselessTab;
 import com.sorrowmist.useless.items.EndlessBeafItem;
+import com.sorrowmist.useless.networking.ModMessages;
 import com.sorrowmist.useless.worldgen.dimension.UselessDimension;
 import com.sorrowmist.useless.worldgen.dimension.UselessDimension2;
 import net.minecraftforge.api.distmarker.Dist;
@@ -44,6 +42,8 @@ public class UselessMod
 
         initAll(modEventBus);
         initializeConfig();
+
+        ModMessages.register();
 
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);

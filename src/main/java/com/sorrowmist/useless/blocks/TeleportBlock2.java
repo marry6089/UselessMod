@@ -38,7 +38,8 @@ public class TeleportBlock2 {
 
     public static final RegistryObject<Block> TELEPORT_BLOCK_2 = BLOCKS.register("teleport_block_2",
             () -> new Block(BlockBehaviour.Properties.of()
-                    .strength(2.0f,65536.0f)) {
+                    .strength(2.0f,65536.0f)
+                    .requiresCorrectToolForDrops()) {
                 @Override
                 public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
                     if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer) {
