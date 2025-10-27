@@ -3,13 +3,14 @@
   "minVersion": "0.8",
   "package": "com.sorrowmist.useless.mixin",
   "compatibilityLevel": "JAVA_17",
-  "refmap": "useless.refmap.json",
+  "refmap": "useless_mod.mixins.json",
   "client": [
   ],
   "injectors": {
     "defaultRequire": 1
   },
   "mixins": [
+    "BlockTravelAnchorMixin",
     "TileComponentEjectorMixin",
     "TileEntityDigitalMinerMixin"
   ]

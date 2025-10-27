@@ -134,9 +134,6 @@ repositories {
         name = "BlameJared"
         url = "https://maven.blamejared.com"
     }
-    maven {
-        url "https://jitpack.io"
-    }
     //maven { url 'https://maven.mekanism.io/' } // Mekanism official Maven
 }
 
@@ -153,12 +150,11 @@ dependencies {
     implementation fg.deobf("curse.maven:Placebo-283644:6274231") // Placebo-1.20.1-8.6.3
     implementation fg.deobf("curse.maven:Patchouli-306770:6164575") // Patchouli-1.20.1-84.1
     implementation fg.deobf("curse.maven:Apotheosis-313970:6461960") // Apotheosis-1.20.1-7.4.8
-    implementation fg.deobf("curse.maven:Ender IO-64578:7004092") // Ender IO -1.20.1 - 6.2.15-beta
     implementation fg.deobf("curse.maven:thermal_foundation-222880:5443583") // thermal_foundation-1.20.1-11.0.6.70
     implementation fg.deobf("curse.maven:thermal_expansion-69163:5372749") // thermal_expansion-1.20.1-11.0.1.29
     implementation fg.deobf("curse.maven:cofh_core-69162:5374122") // cofh_core-1.20.1-11.0.2.56
-    implementation 'com.github.CoFH:ThermalCore:1.20.x-bedbdf32d5-1'
-
+    implementation fg.deobf("curse.maven:TravelAnchors-413234:4683662") // TravelAnchors-1.20.1-5.0.1
+    implementation fg.deobf("curse.maven:LibX-412525:4947474") // LibX-1.20.1-5.0.12
     runtimeOnly files("lib/mekanismupgradesreborn-1.20.1-5.0.0.jar")
 }
 

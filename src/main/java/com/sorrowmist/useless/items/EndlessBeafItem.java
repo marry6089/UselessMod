@@ -1,12 +1,13 @@
 package com.sorrowmist.useless.items;
+
 import com.sorrowmist.useless.UselessMod;
 import com.sorrowmist.useless.blocks.GlowPlasticBlock;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -24,12 +25,17 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -41,22 +47,16 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.util.*;
 
-
 public class EndlessBeafItem extends PickaxeItem {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, UselessMod.MOD_ID);
-
-
 
     public EndlessBeafItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
         super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
     }
 
-
-
     public static void init(IEventBus iEventBus){
         ITEMS.register(iEventBus);
     }
-
 
     @Override
     public boolean isDamageable(ItemStack stack) {
@@ -79,17 +79,12 @@ public class EndlessBeafItem extends PickaxeItem {
         super.setDamage(stack, 0);
     }
 
-
-
-
-
     // 检查是否处于精准采集模式
     public boolean isSilkTouchMode(ItemStack stack) {
         CompoundTag tag = stack.getTag();
         return tag != null && tag.getBoolean("SilkTouchMode");
     }
 
-    // 更新实际的附魔NBT
     // 更新实际的附魔NBT
     public void updateEnchantments(ItemStack stack) {
         // 获取现有的所有附魔
@@ -146,8 +141,6 @@ public class EndlessBeafItem extends PickaxeItem {
         updateEnchantments(stack);
     }
 
-
-
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
@@ -175,9 +168,8 @@ public class EndlessBeafItem extends PickaxeItem {
         tooltip.add(Component.translatable("tooltip.useless_mod.wrench_function").withStyle(ChatFormatting.YELLOW));
         tooltip.add(Component.translatable("tooltip.useless_mod.fast_break_plastic").withStyle(ChatFormatting.GREEN));
         tooltip.add(Component.translatable("tooltip.useless_mod.festive_affix").withStyle(ChatFormatting.BLUE));
+        tooltip.add(Component.translatable("tooltip.useless_mod.auto_collect").withStyle(ChatFormatting.GREEN)); // 新增提示
     }
-
-
 
     @Override
     public boolean isFoil(ItemStack stack) {
@@ -215,13 +207,11 @@ public class EndlessBeafItem extends PickaxeItem {
         // 首次创建时设置为时运模式
         if (!stack.hasTag() || !stack.getTag().contains("SilkTouchMode")) {
             switchEnchantmentMode(stack, false); // 默认时运模式
-        }else {
+        } else {
             // 确保已有抢夺附魔
             updateEnchantments(stack);
         }
     }
-
-
 
     public static final RegistryObject<Item> ENDLESS_BEAF_ITEM = ITEMS.register("endless_beaf_item",
             () -> new EndlessBeafItem(
@@ -233,8 +223,6 @@ public class EndlessBeafItem extends PickaxeItem {
                             .rarity(Rarity.EPIC)
                             .durability(0)
             ) {
-
-
                 @Override
                 public boolean isCorrectToolForDrops(ItemStack stack, BlockState state) {
                     return state.is(BlockTags.MINEABLE_WITH_PICKAXE) ||
@@ -243,9 +231,10 @@ public class EndlessBeafItem extends PickaxeItem {
                             state.is(BlockTags.MINEABLE_WITH_HOE);
                 }
             });
+
     // 检查是否触发战利品大爆发
     private boolean shouldTriggerFestive(ItemStack stack) {
-        // 20% 概率
+        // 5% 概率
         return Math.random() < 0.05;
     }
 
@@ -273,6 +262,19 @@ public class EndlessBeafItem extends PickaxeItem {
                 }
             }
         }
+
+        @SubscribeEvent
+        public static void onBlockBreak(BlockEvent.BreakEvent event) {
+            Player player = event.getPlayer();
+            if (player == null) return;
+
+            ItemStack mainHandItem = player.getMainHandItem();
+
+            // 检查主手物品是否是EndlessBeafItem
+            if (mainHandItem.getItem() instanceof EndlessBeafItem endlessBeaf) {
+                endlessBeaf.onBlockBreak(event, mainHandItem, player);
+            }
+        }
     }
 
     // 处理掉落物事件的方法
@@ -285,8 +287,6 @@ public class EndlessBeafItem extends PickaxeItem {
         Level level = killedEntity.level();
 
         if (!level.isClientSide) {
-
-
             // 显示提示消息
             sendFestiveMessage(player);
             // 直接修改掉落物堆叠数量 - 更简单有效的方法
@@ -323,6 +323,72 @@ public class EndlessBeafItem extends PickaxeItem {
         }
     }
 
+// 处理方块破坏事件的方法 - 新增功能
+    public void onBlockBreak(BlockEvent.BreakEvent event, ItemStack stack, Player player) {
+        LevelAccessor levelAccessor = event.getLevel();
+        BlockPos pos = event.getPos();
+        BlockState state = event.getState();
+
+        // 确保我们在服务器端并且 LevelAccessor 可以转换为 Level
+        if (levelAccessor.isClientSide() || !(levelAccessor instanceof Level level)) {
+            return;
+        }
+
+        // 获取方块的掉落物
+        List<ItemStack> drops = getBlockDrops(state, level, pos, player, stack);
+
+        // 尝试将掉落物放入玩家背包
+        for (ItemStack drop : drops) {
+            if (!addItemToPlayerInventory(player, drop)) {
+                // 如果背包满了，掉落在玩家脚下
+                ItemEntity itemEntity = new ItemEntity(level,
+                        player.getX(), player.getY(), player.getZ(),
+                        drop);
+                level.addFreshEntity(itemEntity);
+            }
+        }
+
+        // 取消原版掉落物生成
+        event.setCanceled(true);
+
+        // 破坏方块
+        level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+
+        // 播放破坏音效
+        level.playSound(null, pos, state.getSoundType().getBreakSound(), SoundSource.BLOCKS, 1.0F, 1.0F);
+
+        // 生成破坏粒子效果
+        level.levelEvent(2001, pos, Block.getId(state));
+    }
+
+    // 获取方块的掉落物列表 - 针对 1.20.1 的 API
+    private List<ItemStack> getBlockDrops(BlockState state, Level level, BlockPos pos, Player player, ItemStack tool) {
+        if (!(level instanceof ServerLevel serverLevel)) {
+            return Collections.emptyList();
+        }
+
+        // 创建LootParams来获取正确的掉落物 - 1.20.1 使用 LootParams
+        LootParams.Builder lootParamsBuilder = new LootParams.Builder(serverLevel)
+                .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
+                .withParameter(LootContextParams.TOOL, tool)
+                .withParameter(LootContextParams.THIS_ENTITY, player)
+                .withParameter(LootContextParams.BLOCK_STATE, state)
+                .withOptionalParameter(LootContextParams.BLOCK_ENTITY, level.getBlockEntity(pos));
+
+        return state.getDrops(lootParamsBuilder);
+    }
+
+    // 将物品添加到玩家背包
+    private boolean addItemToPlayerInventory(Player player, ItemStack stack) {
+        if (player.getInventory().add(stack)) {
+            // 成功添加到背包
+            return true;
+        } else {
+            // 背包已满
+            return false;
+        }
+    }
+
     // 检查物品是否是装备（基于Festive Affix的逻辑）
     private boolean isEquipment(ItemStack stack) {
         // 检查是否有装备标记（基于Festive Affix的逻辑）
@@ -333,7 +399,6 @@ public class EndlessBeafItem extends PickaxeItem {
         // 可损坏的物品通常是装备（工具、武器、盔甲）
         return stack.isDamageableItem();
     }
-
 
     @Override
     public Component getName(ItemStack stack) {
@@ -347,7 +412,6 @@ public class EndlessBeafItem extends PickaxeItem {
             return Component.translatable("item.useless_mod.endless_beaf_item.fortune");
         }
     }
-
 
     @Override
     public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected) {
@@ -383,7 +447,6 @@ public class EndlessBeafItem extends PickaxeItem {
         return true;
     }
 
-
     @Override
     public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
         // 声明这个物品可以执行斧头和锄头的所有动作
@@ -393,7 +456,6 @@ public class EndlessBeafItem extends PickaxeItem {
                 net.minecraftforge.common.ToolActions.DEFAULT_PICKAXE_ACTIONS.contains(toolAction) ||
                 super.canPerformAction(stack, toolAction)||
                 toolAction.equals(ToolActions.HOE_TILL);
-
     }
 
     private boolean isPlasticBlock(Block block) {
@@ -412,8 +474,6 @@ public class EndlessBeafItem extends PickaxeItem {
         Player player = context.getPlayer();
         BlockState blockstate = world.getBlockState(blockpos);
         BlockState resultToSet = null;
-
-
 
         if (player != null && player.isShiftKeyDown()) {
             // 检查目标方块是否是你的塑料方块
@@ -483,9 +543,6 @@ public class EndlessBeafItem extends PickaxeItem {
         return InteractionResult.sidedSuccess(world.isClientSide);
     }
 
-
-
-
     @Override
     public float getDestroySpeed(ItemStack stack, BlockState state) {
         // 获取基础破坏速度
@@ -505,4 +562,3 @@ public class EndlessBeafItem extends PickaxeItem {
         return baseSpeed;
     }
 }
-
