@@ -13,9 +13,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class BlockTravelAnchorMixin {
 
     @Inject(
-            method = "m_6810_",  // 生产环境方法名
-            at = @At("HEAD"),
-            remap = true  // 启用重映射，这样在开发环境下会映射到 parchment 的 onRemove
+            method = "m_6810_",  // 开发环境可读名
+            at = @At("HEAD")
+          // 允许 ForgeGradle + Mixin 在构建时自动 remap 成混淆名 m_6810_
     )
     private void onRemoveInjection(BlockState state, Level level, BlockPos pos,
                                    BlockState newState, boolean moved, CallbackInfo ci) {
@@ -25,6 +25,6 @@ public class BlockTravelAnchorMixin {
     }
 
     private void handleTravelAnchorBreak(Level level, BlockPos pos, BlockState state) {
-        // 你的具体实现
+        // TODO: 你的逻辑
     }
 }

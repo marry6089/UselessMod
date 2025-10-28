@@ -155,6 +155,10 @@ dependencies {
     implementation fg.deobf("curse.maven:cofh_core-69162:5374122") // cofh_core-1.20.1-11.0.2.56
     implementation fg.deobf("curse.maven:TravelAnchors-413234:4683662") // TravelAnchors-1.20.1-5.0.1
     implementation fg.deobf("curse.maven:LibX-412525:4947474") // LibX-1.20.1-5.0.12
+    implementation fg.deobf("curse.maven:jecharacters-250702:6680042") // jecharacters-1.20.1-forge-4.5.16
+    implementation fg.deobf("curse.maven:GregTechCEu-890405:6254458") // GregTechCEu-1.20.1-1.6.4
+    implementation fg.deobf("curse.maven:BotanyPots-353928:6348581") // BotanyPots-Forge-1.20.1-13.0.41
+    implementation fg.deobf("curse.maven:Bookshelf-228525:5423987") // Bookshelf-Forge-1.20.1-20.2.13
     runtimeOnly files("lib/mekanismupgradesreborn-1.20.1-5.0.0.jar")
 }
 
