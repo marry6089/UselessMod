@@ -10,9 +10,11 @@
     "defaultRequire": 1
   },
   "mixins": [
+    "BlockEntityBotanyPotMixin",
     "BlockTravelAnchorMixin",
     "BotanyPotsForgeClientMixin",
     "TileComponentEjectorMixin",
-    "TileEntityDigitalMinerMixin"
+    "TileEntityDigitalMinerMixin",
+    "accessor.BlockEntityBotanyPotAccessor"
   ]
 }

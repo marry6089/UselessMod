@@ -3,17 +3,14 @@ package com.sorrowmist.useless.worldgen.dimension;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.sorrowmist.useless.config.ConfigManager;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.NoiseColumn;
 import net.minecraft.world.level.StructureManager;
-import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.BiomeManager;
 import net.minecraft.world.level.biome.BiomeSource;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
@@ -22,7 +19,6 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.blending.Blender;
-import com.sorrowmist.useless.Config;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
@@ -36,19 +32,15 @@ public class UselessDimGen extends ChunkGenerator {
             ).apply(instance, UselessDimGen::new)
     );
 
-    private final Config config;
-
     public UselessDimGen(BiomeSource biomeSource) {
         super(biomeSource);
-        // 加载配置 - 这里需要传入config目录路径
-        this.config = Config.load(getConfigPath());
+        // 不再需要加载配置，ConfigManager 会处理
     }
 
     @Override
     public void spawnOriginalMobs(WorldGenRegion region) {
         // 超平坦世界不生成原始怪物
     }
-
 
     @Override
     public int getSeaLevel() {
@@ -65,7 +57,8 @@ public class UselessDimGen extends ChunkGenerator {
             if (y == -64) {
                 states[index] = Blocks.BEDROCK.defaultBlockState();
             } else if (y >= -63 && y <= 5) {
-                states[index] = config.getFillBlock().defaultBlockState();
+                // 使用 ConfigManager 获取填充方块
+                states[index] = ConfigManager.getFillBlock().defaultBlockState();
             } else {
                 states[index] = Blocks.AIR.defaultBlockState();
             }
@@ -97,13 +90,13 @@ public class UselessDimGen extends ChunkGenerator {
 
                     // 判断是否在中心2x2区域内 (坐标7-8)
                     if (x >= 7 && x <= 8 && z >= 7 && z <= 8) {
-                        blockState = config.getCenterBlock().defaultBlockState();
+                        blockState = ConfigManager.getCenterBlock().defaultBlockState();
                     }
                     // 判断是否在中心14x14区域内
                     else if (x >= 1 && x <= 14 && z >= 1 && z <= 14) {
-                        blockState = config.getFillBlock().defaultBlockState();
+                        blockState = ConfigManager.getFillBlock().defaultBlockState();
                     } else {
-                        blockState = config.getBorderBlock().defaultBlockState();
+                        blockState = ConfigManager.getBorderBlock().defaultBlockState();
                     }
 
                     chunk.setBlockState(pos.set(x, y, z), blockState, false);
@@ -148,19 +141,10 @@ public class UselessDimGen extends ChunkGenerator {
     @Override
     public void addDebugScreenInfo(java.util.List<String> list, RandomState randomState, BlockPos pos) {
         list.add("Useless Dimension - Plastic Platform");
-        list.add("边框方块: " + config.getBorderBlock());
-        list.add("填充方块: " + config.getFillBlock());
-        list.add("中心方块: " + config.getCenterBlock());
+        list.add("边框方块: " + ConfigManager.getBorderBlock());
+        list.add("填充方块: " + ConfigManager.getFillBlock());
+        list.add("中心方块: " + ConfigManager.getCenterBlock());
     }
 
-    // 获取配置路径的方法（需要根据你的mod加载器实现）
-    private java.nio.file.Path getConfigPath() {
-        // 对于Fabric，使用：
-        // return net.fabricmc.loader.api.FabricLoader.getInstance().getConfigDir();
-
-        // 对于Forge，使用：
-         return net.minecraftforge.fml.loading.FMLPaths.CONFIGDIR.get();
-
-        // 这里使用临时实现，你需要根据你的mod加载器调整
-    }
+    // 移除 getConfigPath 方法，因为不再需要
 }

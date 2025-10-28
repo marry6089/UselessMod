@@ -14,7 +14,8 @@ public class BlockTravelAnchorMixin {
 
     @Inject(
             method = "m_6810_",  // 开发环境可读名
-            at = @At("HEAD")
+            at = @At("HEAD"),
+            remap = false
           // 允许 ForgeGradle + Mixin 在构建时自动 remap 成混淆名 m_6810_
     )
     private void onRemoveInjection(BlockState state, Level level, BlockPos pos,

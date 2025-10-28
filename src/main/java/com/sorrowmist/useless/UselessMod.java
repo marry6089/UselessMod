@@ -2,6 +2,7 @@ package com.sorrowmist.useless;
 
 import com.mojang.logging.LogUtils;
 import com.sorrowmist.useless.blocks.*;
+import com.sorrowmist.useless.config.ConfigManager;
 import com.sorrowmist.useless.inventories.UselessTab;
 import com.sorrowmist.useless.items.EndlessBeafItem;
 import com.sorrowmist.useless.networking.ModMessages;
@@ -13,36 +14,33 @@ import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Mixins;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(UselessMod.MOD_ID)
-public class UselessMod
-{
+public class UselessMod {
     // Define mod id in a common place for everything to reference
     public static final String MOD_ID = "useless_mod";
     // Directly reference a slf4j logger
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public static Config CONFIG;
+    public UselessMod() {
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-
-    public UselessMod(FMLJavaModLoadingContext context)
-    {
-        IEventBus modEventBus = context.getModEventBus();
-        //IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-
+        // 初始化所有内容
         initAll(modEventBus);
-        initializeConfig();
 
+        // 注册配置
+        registerConfig();
+
+        // 注册网络消息
         ModMessages.register();
 
         // Register the commonSetup method for modloading
@@ -53,22 +51,24 @@ public class UselessMod
 
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
+
+        // 注册 Mixin 配置
         Mixins.addConfiguration("useless_mod.mixins.json");
-
     }
 
-    private void initializeConfig() {
-        try {
-            // 获取配置目录路径
-            Path configDir = Paths.get("config");
-            // 加载或创建配置文件
-            CONFIG = Config.load(configDir);
-            LOGGER.info("配置文件已加载: {}", configDir.resolve("uselessdim_config.json"));
-        } catch (Exception e) {
-            LOGGER.error("加载配置文件时出错", e);
-        }
+    /**
+     * 注册配置
+     */
+    private void registerConfig() {
+        // 注册通用配置
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigManager.SPEC, "useless_mod-common.toml");
+        LOGGER.info("已注册 TOML 配置文件");
     }
-    public void initAll(IEventBus iEventBus){
+
+    /**
+     * 初始化所有注册项
+     */
+    public void initAll(IEventBus iEventBus) {
         EndlessBeafItem.init(iEventBus);
         UselessTab.init(iEventBus);
         TeleportBlock.init(iEventBus);
@@ -79,28 +79,43 @@ public class UselessMod
         GlowPlasticBlock.init(iEventBus);
     }
 
-    private void commonSetup(final FMLCommonSetupEvent event) {}
+    /**
+     * 通用设置
+     */
+    private void commonSetup(final FMLCommonSetupEvent event) {
+        // 在通用设置中记录配置信息
+        LOGGER.info("植物盆生长倍率: {}", ConfigManager.getBotanyPotGrowthMultiplier());
+        LOGGER.info("边框方块: {}", ConfigManager.getBorderBlock());
+        LOGGER.info("填充方块: {}", ConfigManager.getFillBlock());
+        LOGGER.info("中心方块: {}", ConfigManager.getCenterBlock());
+    }
 
-    // Add the example block item to the building blocks tab
+    /**
+     * 添加创造模式标签内容
+     */
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
-
+        // 这里可以添加物品到创造模式标签
     }
 
-
-
-    // You can use SubscribeEvent and let the Event Bus discover methods to call
+    /**
+     * 服务器启动事件
+     */
     @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event)
-    {
-        // Do something when the server starts
+    public void onServerStarting(ServerStartingEvent event) {
+        // 服务器启动时执行的操作
         LOGGER.info("HELLO from server starting");
+        LOGGER.info("服务器配置 - 植物盆生长倍率: {}", ConfigManager.getBotanyPotGrowthMultiplier());
     }
 
-    // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
+    /**
+     * 客户端事件订阅器
+     */
     @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-    public static class ClientModEvents
-    {
+    public static class ClientModEvents {
         @SubscribeEvent
-        public static void onClientSetup(FMLClientSetupEvent event) {}
+        public static void onClientSetup(FMLClientSetupEvent event) {
+            // 客户端设置
+            LOGGER.info("客户端配置 - 植物盆生长倍率: {}", ConfigManager.getBotanyPotGrowthMultiplier());
+        }
     }
 }

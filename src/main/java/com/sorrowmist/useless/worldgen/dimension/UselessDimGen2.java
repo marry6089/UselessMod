@@ -1,9 +1,8 @@
-// UselessDimGen.java
 package com.sorrowmist.useless.worldgen.dimension;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.sorrowmist.useless.Config;
+import com.sorrowmist.useless.config.ConfigManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.LevelHeightAccessor;
@@ -32,19 +31,15 @@ public class UselessDimGen2 extends ChunkGenerator {
             ).apply(instance, UselessDimGen2::new)
     );
 
-    private final Config config;
-
     public UselessDimGen2(BiomeSource biomeSource) {
         super(biomeSource);
-        // 加载配置 - 这里需要传入config目录路径
-        this.config = Config.load(getConfigPath());
+        // 不再需要加载配置，ConfigManager 会处理
     }
 
     @Override
     public void spawnOriginalMobs(WorldGenRegion region) {
         // 超平坦世界不生成原始怪物
     }
-
 
     @Override
     public int getSeaLevel() {
@@ -61,7 +56,8 @@ public class UselessDimGen2 extends ChunkGenerator {
             if (y == -64) {
                 states[index] = Blocks.BEDROCK.defaultBlockState();
             } else if (y >= -63 && y <= 5) {
-                states[index] = config.getFillBlock().defaultBlockState();
+                // 使用 ConfigManager 获取填充方块
+                states[index] = ConfigManager.getFillBlock().defaultBlockState();
             } else {
                 states[index] = Blocks.AIR.defaultBlockState();
             }
@@ -87,19 +83,19 @@ public class UselessDimGen2 extends ChunkGenerator {
                 // 设置基岩底层 (Y=-64)
                 chunk.setBlockState(pos.set(x, -64, z), Blocks.BEDROCK.defaultBlockState(), false);
 
-                // 生成69层塑料平台 (Y=-63 到 Y=5)
+                // 生成69层平台 (Y=-63 到 Y=5)
                 for (int y = -63; y <= 5; y++) {
                     BlockState blockState;
 
                     // 判断是否在坐标(8,8)的中心方块
                     if (x == 8 && z == 8) {
-                        blockState = config.getCenterBlock().defaultBlockState();
+                        blockState = ConfigManager.getCenterBlock().defaultBlockState();
                     }
                     // 判断是否在最北边一行(z=0)或最西边一列(x=0)
                     else if (x == 0 || z == 0) {
-                        blockState = config.getBorderBlock().defaultBlockState();
+                        blockState = ConfigManager.getBorderBlock().defaultBlockState();
                     } else {
-                        blockState = config.getFillBlock().defaultBlockState();
+                        blockState = ConfigManager.getFillBlock().defaultBlockState();
                     }
 
                     chunk.setBlockState(pos.set(x, y, z), blockState, false);
@@ -144,19 +140,10 @@ public class UselessDimGen2 extends ChunkGenerator {
     @Override
     public void addDebugScreenInfo(java.util.List<String> list, RandomState randomState, BlockPos pos) {
         list.add("Useless Dimension - Plastic Platform");
-        list.add("边框方块: " + config.getBorderBlock());
-        list.add("填充方块: " + config.getFillBlock());
-        list.add("中心方块: " + config.getCenterBlock());
+        list.add("边框方块: " + ConfigManager.getBorderBlock());
+        list.add("填充方块: " + ConfigManager.getFillBlock());
+        list.add("中心方块: " + ConfigManager.getCenterBlock());
     }
 
-    // 获取配置路径的方法（需要根据你的mod加载器实现）
-    private java.nio.file.Path getConfigPath() {
-        // 对于Fabric，使用：
-        // return net.fabricmc.loader.api.FabricLoader.getInstance().getConfigDir();
-
-        // 对于Forge，使用：
-         return net.minecraftforge.fml.loading.FMLPaths.CONFIGDIR.get();
-
-        // 这里使用临时实现，你需要根据你的mod加载器调整
-    }
+    // 移除 getConfigPath 方法，因为不再需要
 }
