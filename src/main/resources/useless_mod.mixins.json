@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "useless_mod.mixins.json",
   "client": [
+    "GuiAssemblerMatrixPatternInfoMixin"
   ],
   "injectors": {
     "defaultRequire": 1
@@ -13,6 +14,7 @@
     "BlockEntityBotanyPotMixin",
     "BlockTravelAnchorMixin",
     "BotanyPotsForgeClientMixin",
+    "PatternSlotTrackerMixin",
     "TileAssemblerMatrixPatternMixin",
     "TileComponentEjectorMixin",
     "TileEntityDigitalMinerMixin",

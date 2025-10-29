@@ -24,8 +24,10 @@ public class ConfigManager {
     // 矩阵样板数量配置
     public static final ForgeConfigSpec.IntValue MATRIX_PATTERN_COUNT;
 
+
+
     static {
-        // 初始化配置
+        // 初始化配
         BUILDER.push("维度生成设置");
 
         BORDER_BLOCK = BUILDER
@@ -52,6 +54,8 @@ public class ConfigManager {
         MATRIX_PATTERN_COUNT = BUILDER
                 .comment("减少数量时请保持槽位空！否则可能会造成样板丢失")
                 .defineInRange("矩阵样板核心槽位倍率", 1, 1, 100); // 默认10，最小1，最大100
+
+
 
         BUILDER.pop();
 
@@ -83,6 +87,8 @@ public class ConfigManager {
     public static int getMatrixPatternCount() {
         return MATRIX_PATTERN_COUNT.get();
     }
+
+
 
     private static Block getBlockFromString(String blockId, Block fallback) {
         try {

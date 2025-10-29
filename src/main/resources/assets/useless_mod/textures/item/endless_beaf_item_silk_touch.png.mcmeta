@@ -2,7 +2,7 @@
 	"animation": {
 		"frametime": 3,
 		"interpolate": true,
-		"width": 45,
+		"width": 90,
 		"height": 90
 	}
 }

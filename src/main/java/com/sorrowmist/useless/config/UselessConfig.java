@@ -17,7 +17,7 @@ public class UselessConfig {
     // 植物盆生长速度配置
     public static final ForgeConfigSpec.DoubleValue BOTANY_POT_GROWTH_MULTIPLIER;
 
-    // 矩阵样板数量配置
+    // 矩阵数量配置
     public static final ForgeConfigSpec.IntValue MATRIX_PATTERN_COUNT;
 
     static {
@@ -47,6 +47,7 @@ public class UselessConfig {
         MATRIX_PATTERN_COUNT = BUILDER
                 .comment("矩阵样板槽位-倍数")
                 .defineInRange("matrix_pattern_count", 1, 1, 100); // 默认10，最小1，最大100
+
 
         BUILDER.pop();
 
