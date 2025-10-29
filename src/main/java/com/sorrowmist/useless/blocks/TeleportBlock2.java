@@ -31,10 +31,6 @@ public class TeleportBlock2 {
     private static final ResourceLocation USELESSDIM_ID = ResourceLocation.fromNamespaceAndPath(UselessMod.MOD_ID, "uselessdim2");
     private static final ResourceKey<Level> USELESSDIM_KEY = ResourceKey.create(net.minecraft.core.registries.Registries.DIMENSION, USELESSDIM_ID);
 
-    public static void init(IEventBus iEventBus) {
-        BLOCKS.register(iEventBus);
-        ITEMS.register(iEventBus);
-    }
 
     public static final RegistryObject<Block> TELEPORT_BLOCK_2 = BLOCKS.register("teleport_block_2",
             () -> new Block(BlockBehaviour.Properties.of()

@@ -54,9 +54,6 @@ public class EndlessBeafItem extends PickaxeItem {
         super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
     }
 
-    public static void init(IEventBus iEventBus){
-        ITEMS.register(iEventBus);
-    }
 
     @Override
     public boolean isDamageable(ItemStack stack) {

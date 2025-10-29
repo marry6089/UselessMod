@@ -63,9 +63,4 @@ public class GlowPlasticBlock extends Block implements IColoredBlock {
         }
     }
 
-    // 初始化方法
-    public static void init(IEventBus eventBus) {
-        BLOCKS.register(eventBus);
-        ITEMS.register(eventBus);
-    }
 }

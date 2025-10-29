@@ -16,10 +16,4 @@ public class UselessDimension2 {
     public static final RegistryObject<Codec<UselessDimGen2>> USELESSDIM_GEN_CODEC =
             CHUNK_GENERATORS.register("uselessdim_gen_2", () -> UselessDimGen2.CODEC);
 
-
-
-    // 初始化注册方法 - 只需要注册区块生成器
-    public static void init(IEventBus iEventBus) {
-        CHUNK_GENERATORS.register(iEventBus);
-    }
 }

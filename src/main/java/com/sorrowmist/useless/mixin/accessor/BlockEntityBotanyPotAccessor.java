@@ -1,7 +1,6 @@
 package com.sorrowmist.useless.mixin.accessor;
 
 import net.darkhax.botanypots.block.BlockEntityBotanyPot;
-import net.darkhax.botanypots.block.inv.BotanyPotContainer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
