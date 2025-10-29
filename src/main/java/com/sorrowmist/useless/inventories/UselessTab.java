@@ -19,9 +19,6 @@ public class UselessTab {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_TAB =
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, UselessMod.MOD_ID);
 
-    public static void init(IEventBus iEventBus) {
-        CREATIVE_TAB.register(iEventBus);
-    }
 
     public static final RegistryObject<CreativeModeTab> USELESS_TAB =
             CREATIVE_TAB.register("useless_tab", () -> CreativeModeTab.builder()

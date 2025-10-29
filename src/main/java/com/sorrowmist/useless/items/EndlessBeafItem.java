@@ -54,9 +54,6 @@ public class EndlessBeafItem extends PickaxeItem {
         super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
     }
 
-    public static void init(IEventBus iEventBus){
-        ITEMS.register(iEventBus);
-    }
 
     @Override
     public boolean isDamageable(ItemStack stack) {
@@ -139,6 +136,13 @@ public class EndlessBeafItem extends PickaxeItem {
     public void switchEnchantmentMode(ItemStack stack, boolean silkTouchMode) {
         stack.getOrCreateTag().putBoolean("SilkTouchMode", silkTouchMode);
         updateEnchantments(stack);
+        // 强制客户端更新物品渲染
+        if (!stack.isEmpty()) {
+            // 通过修改NBT强制更新
+            CompoundTag tag = stack.getOrCreateTag();
+            tag.putLong("LastModeSwitch", System.currentTimeMillis());
+            stack.setTag(tag);
+        }
     }
 
     @Override

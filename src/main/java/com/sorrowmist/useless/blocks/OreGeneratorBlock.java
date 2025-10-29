@@ -38,12 +38,6 @@ public class OreGeneratorBlock extends Block implements EntityBlock {
     public static final RegistryObject<Item> ORE_GENERATOR_BLOCK_ITEM = ITEMS.register("ore_generator_block",
             () -> new BlockItem(ORE_GENERATOR_BLOCK.get(), new Item.Properties()));
 
-    // 初始化方法
-    public static void init(IEventBus iEventBus) {
-        BLOCKS.register(iEventBus);
-        ITEMS.register(iEventBus);
-        ModBlockEntities.BLOCK_ENTITIES.register(iEventBus);
-    }
 
     // 方块构造函数
     public OreGeneratorBlock() {
