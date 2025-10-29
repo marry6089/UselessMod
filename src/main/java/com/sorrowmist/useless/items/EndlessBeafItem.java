@@ -473,32 +473,44 @@ public class EndlessBeafItem extends PickaxeItem {
         BlockPos blockpos = context.getClickedPos();
         Player player = context.getPlayer();
         BlockState blockstate = world.getBlockState(blockpos);
-        BlockState resultToSet = null;
 
+        // 按住 Shift 的右键仍然保留你原本的“快速破坏塑料块（不掉落粒子）”逻辑（如果你想保留）
         if (player != null && player.isShiftKeyDown()) {
-            // 检查目标方块是否是你的塑料方块
             if (isPlasticBlock(blockstate.getBlock())) {
                 if (!world.isClientSide) {
-                    // 服务器端：手动处理方块破坏，不显示粒子效果
-                    Block.dropResources(blockstate, world, blockpos, null, player, context.getItemInHand());
+                    // 在服务器端：把方块的掉落物放进背包（或在背包满时丢出）
+                    List<ItemStack> drops = getBlockDrops(blockstate, (Level) world, blockpos, player, context.getItemInHand());
+                    for (ItemStack drop : drops) {
+                        // 复制一个堆叠放入（以免修改原 list）
+                        ItemStack toAdd = drop.copy();
+                        if (!addItemToPlayerInventory(player, toAdd)) {
+                            // 背包满了：丢在玩家脚下
+                            player.drop(toAdd, false);
+                        }
+                    }
+
+                    // 移除方块并播放声音
                     world.setBlock(blockpos, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL_IMMEDIATE);
-                    world.playSound(player, blockpos, SoundEvents.STONE_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
+                    world.playSound(null, blockpos, SoundEvents.STONE_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
                 } else {
-                    // 客户端：播放声音
+                    // 客户端只播放声音（不做掉落/方块移除）
                     world.playSound(player, blockpos, SoundEvents.STONE_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
                 }
                 return InteractionResult.sidedSuccess(world.isClientSide);
             }
         }
 
-        // 1. 首先尝试作为斧头使用（去皮）
+        // 以下保持你原本的“万能工具作为斧头/锄头”等的行为
+        BlockState resultToSet = null;
+
+        // 1. 作为斧头（去皮）
         BlockState axeResult = blockstate.getToolModifiedState(context, ToolActions.AXE_STRIP, false);
         if (axeResult != null) {
             world.playSound(player, blockpos, SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0F, 1.0F);
             resultToSet = axeResult;
         }
 
-        // 2. 尝试作为斧头刮蜡
+        // 2. 刮蜡
         if (resultToSet == null) {
             BlockState scrapeResult = blockstate.getToolModifiedState(context, ToolActions.AXE_SCRAPE, false);
             if (scrapeResult != null) {
@@ -507,7 +519,7 @@ public class EndlessBeafItem extends PickaxeItem {
             }
         }
 
-        // 3. 尝试作为斧头氧化
+        // 3. 去蜡/解除氧化
         if (resultToSet == null) {
             BlockState oxidizeResult = blockstate.getToolModifiedState(context, ToolActions.AXE_WAX_OFF, false);
             if (oxidizeResult != null) {
@@ -516,7 +528,7 @@ public class EndlessBeafItem extends PickaxeItem {
             }
         }
 
-        // 4. 最后尝试作为锄头使用（耕地）
+        // 4. 锄头耕地
         if (resultToSet == null) {
             BlockState hoeResult = blockstate.getToolModifiedState(context, ToolActions.HOE_TILL, false);
             if (hoeResult != null) {
@@ -542,6 +554,7 @@ public class EndlessBeafItem extends PickaxeItem {
 
         return InteractionResult.sidedSuccess(world.isClientSide);
     }
+
 
     @Override
     public float getDestroySpeed(ItemStack stack, BlockState state) {
