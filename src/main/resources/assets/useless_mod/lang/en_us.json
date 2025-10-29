@@ -41,5 +41,7 @@
   "message.useless_mod.switched_to_fortune": "§6已切换到时运模式",
   "message.useless_mod.festive_triggered": "§6战利品大爆发！",
   "tooltip.useless_mod.festive_affix": "5% 概率在击杀时触发战利品大爆发",
-  "tooltip.useless_mod.auto_collect": "自带磁力功能"
+  "tooltip.useless_mod.auto_collect": "自带磁力功能",
+  "config.useless_mod.botany_pot_growth_multiplier": "植物盆生长倍率",
+  "config.useless_mod.matrix_pattern_count": "矩阵样板数量倍率"
 }

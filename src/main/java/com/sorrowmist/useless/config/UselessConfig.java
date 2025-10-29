@@ -17,6 +17,9 @@ public class UselessConfig {
     // 植物盆生长速度配置
     public static final ForgeConfigSpec.DoubleValue BOTANY_POT_GROWTH_MULTIPLIER;
 
+    // 矩阵样板数量配置
+    public static final ForgeConfigSpec.IntValue MATRIX_PATTERN_COUNT;
+
     static {
         BUILDER.push("维度生成设置");
 
@@ -39,6 +42,11 @@ public class UselessConfig {
         BOTANY_POT_GROWTH_MULTIPLIER = BUILDER
                 .comment("植物盆生长倍率 - 1.0为原版速度，2.0为2倍速度，0.5为半速")
                 .defineInRange("botany_pot_growth_multiplier", 1.0, 0.1, 2147483647);
+
+        // 矩阵样板数量配置
+        MATRIX_PATTERN_COUNT = BUILDER
+                .comment("矩阵样板槽位-倍数")
+                .defineInRange("matrix_pattern_count", 1, 1, 100); // 默认10，最小1，最大100
 
         BUILDER.pop();
 
