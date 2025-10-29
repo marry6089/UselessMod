@@ -159,6 +159,7 @@ dependencies {
     implementation fg.deobf("curse.maven:GregTechCEu-890405:6254458") // GregTechCEu-1.20.1-1.6.4
     implementation fg.deobf("curse.maven:BotanyPots-353928:6348581") // BotanyPots-Forge-1.20.1-13.0.41
     implementation fg.deobf("curse.maven:Bookshelf-228525:5423987") // Bookshelf-Forge-1.20.1-20.2.13
+    implementation fg.deobf("curse.maven:configured-457570:5180900") // configured-forge-1.20.1-2.2.3
     runtimeOnly files("lib/mekanismupgradesreborn-1.20.1-5.0.0.jar")
 }
 

@@ -8,7 +8,11 @@ import com.sorrowmist.useless.items.EndlessBeafItem;
 import com.sorrowmist.useless.networking.ModMessages;
 import com.sorrowmist.useless.worldgen.dimension.UselessDimension;
 import com.sorrowmist.useless.worldgen.dimension.UselessDimension2;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
@@ -116,6 +120,24 @@ public class UselessMod {
         public static void onClientSetup(FMLClientSetupEvent event) {
             // 客户端设置
             LOGGER.info("客户端配置 - 植物盆生长倍率: {}", ConfigManager.getBotanyPotGrowthMultiplier());
+            // 注册物品模型属性
+            event.enqueueWork(() -> {
+                registerItemModelProperties();
+            });
+        }
+        private static void registerItemModelProperties() {
+            // 注册 EndlessBeafItem 的模型属性
+            ItemProperties.register(EndlessBeafItem.ENDLESS_BEAF_ITEM.get(),
+                    ResourceLocation.fromNamespaceAndPath(UselessMod.MOD_ID, "silk_touch_mode"),
+                    (ItemStack stack, net.minecraft.client.multiplayer.ClientLevel level,
+                     net.minecraft.world.entity.LivingEntity entity, int seed) -> {
+                        if (stack.getItem() instanceof EndlessBeafItem item) {
+                            return item.isSilkTouchMode(stack) ? 1.0F : 0.0F;
+                        }
+                        return 0.0F;
+                    });
+
+            LOGGER.info("已注册物品模型属性");
         }
     }
 }
