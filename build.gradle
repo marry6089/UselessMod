@@ -160,6 +160,20 @@ dependencies {
     implementation fg.deobf("curse.maven:BotanyPots-353928:6348581") // BotanyPots-Forge-1.20.1-13.0.41
     implementation fg.deobf("curse.maven:Bookshelf-228525:5423987") // Bookshelf-Forge-1.20.1-20.2.13
     runtimeOnly files("lib/mekanismupgradesreborn-1.20.1-5.0.0.jar")
+
+
+    //exendedae前置
+    implementation fg.deobf("curse.maven:glodium-957920:5226922")
+    //extendedAE
+    implementation fg.deobf("curse.maven:ex-pattern-provider-892005:7144417")
+    //ae2
+    implementation fg.deobf("curse.maven:applied-energistics-2-223794:6629570")
+    implementation fg.deobf("curse.maven:guideme-1173950:7127447")
+    //config
+    implementation fg.deobf("curse.maven:configured-457570:5180900")
+
+
+
 }
 
 mixin {
@@ -225,4 +239,29 @@ publishing {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}
+// 自定义 jar 构建配置
+jar {
+    archiveBaseName.set("uselessmod")
+    archiveVersion.set("1.20.1-" + project.version)
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    // 排除开发用文件和无关资源
+    exclude "**/mixin_refmap.json"
+    exclude "**/mixin.refmap.json"
+    exclude "**/*.log"
+    exclude "**/*.xcf"        // GIMP 图片源文件
+    exclude "**/*.psd"        // Photoshop 源文件
+    exclude "**/.gitkeep"
+    exclude "**/dev/**"
+    exclude "**/example/**"
+}
+
+ // 构建前自动清理旧文件
+tasks.build {
+    doFirst {
+        delete fileTree("build/libs") {
+            include "*.jar"
+        }
+    }
 }

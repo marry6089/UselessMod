@@ -88,6 +88,8 @@ public class UselessMod {
         LOGGER.info("边框方块: {}", ConfigManager.getBorderBlock());
         LOGGER.info("填充方块: {}", ConfigManager.getFillBlock());
         LOGGER.info("中心方块: {}", ConfigManager.getCenterBlock());
+        // 添加矩阵样板数量到日志
+        LOGGER.info("矩阵样板数量: {}", ConfigManager.getMatrixPatternCount());
     }
 
     /**
@@ -105,6 +107,8 @@ public class UselessMod {
         // 服务器启动时执行的操作
         LOGGER.info("HELLO from server starting");
         LOGGER.info("服务器配置 - 植物盆生长倍率: {}", ConfigManager.getBotanyPotGrowthMultiplier());
+        // 添加矩阵样板数量到日志
+        LOGGER.info("服务器配置 - 矩阵样板数量: {}", ConfigManager.getMatrixPatternCount());
     }
 
     /**
@@ -116,6 +120,8 @@ public class UselessMod {
         public static void onClientSetup(FMLClientSetupEvent event) {
             // 客户端设置
             LOGGER.info("客户端配置 - 植物盆生长倍率: {}", ConfigManager.getBotanyPotGrowthMultiplier());
+            // 添加矩阵样板数量到日志
+            LOGGER.info("客户端配置 - 矩阵样板数量: {}", ConfigManager.getMatrixPatternCount());
         }
     }
 }
