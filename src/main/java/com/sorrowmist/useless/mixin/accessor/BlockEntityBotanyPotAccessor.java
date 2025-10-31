@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 import java.util.Random;
 
-@Mixin(BlockEntityBotanyPot.class)
+@Mixin(value = BlockEntityBotanyPot.class ,remap = false)
 public interface BlockEntityBotanyPotAccessor {
 
     // 访问私有字段 rng

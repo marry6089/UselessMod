@@ -1,14 +1,10 @@
 package com.sorrowmist.useless;
 
 import com.mojang.logging.LogUtils;
-import com.sorrowmist.useless.blocks.*;
 import com.sorrowmist.useless.config.ConfigManager;
-import com.sorrowmist.useless.inventories.UselessTab;
 import com.sorrowmist.useless.items.EndlessBeafItem;
 import com.sorrowmist.useless.networking.ModMessages;
 import com.sorrowmist.useless.registry.RegistryHandler;
-import com.sorrowmist.useless.worldgen.dimension.UselessDimension;
-import com.sorrowmist.useless.worldgen.dimension.UselessDimension2;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -55,7 +51,7 @@ public class UselessMod {
 
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
-
+//        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigManager.SPEC);
         // 注册 Mixin 配置
         Mixins.addConfiguration("useless_mod.mixins.json");
     }

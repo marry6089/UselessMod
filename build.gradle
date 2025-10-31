@@ -161,7 +161,7 @@ dependencies {
     implementation fg.deobf("curse.maven:Bookshelf-228525:5423987") // Bookshelf-Forge-1.20.1-20.2.13
     implementation fg.deobf("curse.maven:configured-457570:5180900") // configured-forge-1.20.1-2.2.3
     implementation fg.deobf("curse.maven:extendedae_plus-1337639:7068596") // extendedae_plus-1.4.4
-    runtimeOnly files("lib/mekanismupgradesreborn-1.20.1-5.0.0.jar")
+    implementation fg.deobf("curse.maven:mekanism_extras-1026040:6936409") // mekanism_extras-1.20.1-1.4.6
 
 
     //exendedae前置
@@ -242,28 +242,8 @@ publishing {
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
 }
-// 自定义 jar 构建配置
-jar {
-    archiveBaseName.set("uselessmod")
-    archiveVersion.set("1.20.1-" + project.version)
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
-    // 排除开发用文件和无关资源
-    exclude "**/mixin_refmap.json"
-    exclude "**/mixin.refmap.json"
-    exclude "**/*.log"
-    exclude "**/*.xcf"        // GIMP 图片源文件
-    exclude "**/*.psd"        // Photoshop 源文件
-    exclude "**/.gitkeep"
-    exclude "**/dev/**"
-    exclude "**/example/**"
-}
 
- // 构建前自动清理旧文件
-tasks.build {
-    doFirst {
-        delete fileTree("build/libs") {
-            include "*.jar"
-        }
-    }
+compileJava {
+    options.compilerArgs += ['-Xlint:-deprecation', '-Xlint:-removal', '-Xlint:-unchecked']
 }

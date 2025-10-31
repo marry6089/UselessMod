@@ -18,7 +18,8 @@ public class PatternSlotTrackerMixin {
                     value = "NEW",
                     target = "appeng/util/inv/AppEngInternalInventory",
                     ordinal = 0
-            )
+            ),
+            remap = false
     )
     private appeng.util.inv.AppEngInternalInventory modifyClientInventory(int size) {
         // 使用配置的倍数，而不是硬编码的36

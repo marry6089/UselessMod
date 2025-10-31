@@ -18,6 +18,15 @@
     "TileAssemblerMatrixPatternMixin",
     "TileComponentEjectorMixin",
     "TileEntityDigitalMinerMixin",
-    "accessor.BlockEntityBotanyPotAccessor"
+    "accessor.BlockEntityBotanyPotAccessor",
+    "accessor.DelayAccessor",
+    "mek.CachedRecipeMixin",
+    "mek.DigitalMinerMixin",
+    "mek.ElectricPumpMixin",
+    "mek.FluidicPlenisherMixin",
+    "mek.FormulaicAssemblicatorMixin",
+    "mek.MekanismUtilsMixin",
+    "mek.UpgradeMixin",
+    "mek.UpgradeUtilsMixin"
   ]
 }
