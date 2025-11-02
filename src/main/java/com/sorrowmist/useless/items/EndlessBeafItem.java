@@ -49,10 +49,13 @@ import java.util.*;
 public class EndlessBeafItem extends PickaxeItem {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, UselessMod.MOD_ID);
 
+    // 音效冷却系统
+    private static final Map<UUID, Long> lastSoundTime = new HashMap<>();
+    private static final long SOUND_COOLDOWN = 50; // 50毫秒冷却时间
+
     public EndlessBeafItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
         super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
     }
-
 
     @Override
     public boolean isDamageable(ItemStack stack) {
@@ -251,6 +254,21 @@ public class EndlessBeafItem extends PickaxeItem {
         }
     }
 
+    // 带冷却的音效播放方法
+    private void playBreakSoundWithCooldown(Level level, BlockPos pos, BlockState state, Player player) {
+        if (level.isClientSide()) return;
+
+        UUID playerId = player.getUUID();
+        long currentTime = System.currentTimeMillis();
+        Long lastTime = lastSoundTime.get(playerId);
+
+        // 检查冷却时间
+        if (lastTime == null || currentTime - lastTime >= SOUND_COOLDOWN) {
+            level.playSound(null, pos, state.getSoundType().getBreakSound(), SoundSource.BLOCKS, 0.7F, 1.0F);
+            lastSoundTime.put(playerId, currentTime);
+        }
+    }
+
     @Mod.EventBusSubscriber(modid = UselessMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
     public static class EventHandler {
         @SubscribeEvent
@@ -326,8 +344,13 @@ public class EndlessBeafItem extends PickaxeItem {
         }
     }
 
-// 处理方块破坏事件的方法 - 新增功能
+    // 处理方块破坏事件的方法 - 新增功能
     public void onBlockBreak(BlockEvent.BreakEvent event, ItemStack stack, Player player) {
+        // 修复：创造模式下不处理自动收集
+        if (player.isCreative()) {
+            return;
+        }
+
         LevelAccessor levelAccessor = event.getLevel();
         BlockPos pos = event.getPos();
         BlockState state = event.getState();
@@ -357,11 +380,8 @@ public class EndlessBeafItem extends PickaxeItem {
         // 破坏方块
         level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
 
-        // 播放破坏音效
-        level.playSound(null, pos, state.getSoundType().getBreakSound(), SoundSource.BLOCKS, 1.0F, 1.0F);
-
-        // 生成破坏粒子效果
-        level.levelEvent(2001, pos, Block.getId(state));
+        // 使用带冷却的音效播放
+        playBreakSoundWithCooldown(level, pos, state, player);
     }
 
     // 获取方块的掉落物列表 - 针对 1.20.1 的 API
@@ -477,7 +497,12 @@ public class EndlessBeafItem extends PickaxeItem {
         Player player = context.getPlayer();
         BlockState blockstate = world.getBlockState(blockpos);
 
-        // 按住 Shift 的右键仍然保留你原本的“快速破坏塑料块（不掉落粒子）”逻辑（如果你想保留）
+        // 修复：创造模式下不处理快速破坏塑料块
+        if (player != null && player.isCreative()) {
+            return InteractionResult.PASS;
+        }
+
+        // 按住 Shift 的右键仍然保留你原本的"快速破坏塑料块（不掉落粒子）"逻辑
         if (player != null && player.isShiftKeyDown()) {
             if (isPlasticBlock(blockstate.getBlock())) {
                 if (!world.isClientSide) {
@@ -494,16 +519,17 @@ public class EndlessBeafItem extends PickaxeItem {
 
                     // 移除方块并播放声音
                     world.setBlock(blockpos, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL_IMMEDIATE);
-                    world.playSound(null, blockpos, SoundEvents.STONE_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
+                    // 使用带冷却的音效播放
+                    playBreakSoundWithCooldown(world, blockpos, blockstate, player);
                 } else {
                     // 客户端只播放声音（不做掉落/方块移除）
-                    world.playSound(player, blockpos, SoundEvents.STONE_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
+                    world.playSound(player, blockpos, SoundEvents.STONE_BREAK, SoundSource.BLOCKS, 0.7F, 1.0F);
                 }
                 return InteractionResult.sidedSuccess(world.isClientSide);
             }
         }
 
-        // 以下保持你原本的“万能工具作为斧头/锄头”等的行为
+        // 以下保持你原本的"万能工具作为斧头/锄头"等的行为
         BlockState resultToSet = null;
 
         // 1. 作为斧头（去皮）
@@ -557,7 +583,6 @@ public class EndlessBeafItem extends PickaxeItem {
 
         return InteractionResult.sidedSuccess(world.isClientSide);
     }
-
 
     @Override
     public float getDestroySpeed(ItemStack stack, BlockState state) {

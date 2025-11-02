@@ -6,12 +6,12 @@ import com.sorrowmist.useless.blocks.OreGeneratorBlock;
 import com.sorrowmist.useless.blocks.TeleportBlock;
 import com.sorrowmist.useless.blocks.TeleportBlock2;
 import com.sorrowmist.useless.items.EndlessBeafItem;
+import com.sorrowmist.useless.registry.ThermalMoreItems;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -32,6 +32,16 @@ public class UselessTab {
                         for (RegistryObject<Item> item : GlowPlasticBlock.GLOW_PLASTIC_BLOCK_ITEMS.values()) {
                             pOutput.accept(item.get());
                         }
+                        // 添加 ThermalMore 整合的物品
+                        pOutput.accept(ThermalMoreItems.USELESS_INTEGRAL_COMPONENT_TIER_1.get());
+                        pOutput.accept(ThermalMoreItems.USELESS_INTEGRAL_COMPONENT_TIER_2.get());
+                        pOutput.accept(ThermalMoreItems.USELESS_INTEGRAL_COMPONENT_TIER_3.get());
+                        pOutput.accept(ThermalMoreItems.USELESS_INTEGRAL_COMPONENT_TIER_4.get());
+                        pOutput.accept(ThermalMoreItems.USELESS_INTEGRAL_COMPONENT_TIER_5.get());
+                        pOutput.accept(ThermalMoreItems.USELESS_INTEGRAL_COMPONENT_TIER_6.get());
+                        pOutput.accept(ThermalMoreItems.USELESS_INTEGRAL_COMPONENT_TIER_7.get());
+                        pOutput.accept(ThermalMoreItems.USELESS_INTEGRAL_COMPONENT_TIER_8.get());
+                        pOutput.accept(ThermalMoreItems.USELESS_INTEGRAL_COMPONENT_TIER_9.get());
                     }))
                     .build());
 }

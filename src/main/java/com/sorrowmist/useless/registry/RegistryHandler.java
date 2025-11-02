@@ -1,4 +1,3 @@
-// 文件: RegistryHandler.java
 package com.sorrowmist.useless.registry;
 
 import com.sorrowmist.useless.UselessMod;
@@ -8,6 +7,7 @@ import com.sorrowmist.useless.items.EndlessBeafItem;
 import com.sorrowmist.useless.worldgen.dimension.UselessDimension;
 import com.sorrowmist.useless.worldgen.dimension.UselessDimension2;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 
 import java.util.ArrayList;
@@ -16,6 +16,9 @@ import java.util.List;
 public class RegistryHandler {
     // 存储所有需要注册的DeferredRegister
     private static final List<DeferredRegister<?>> REGISTRIES = new ArrayList<>();
+
+    // 存储其他类型的注册器
+    private static final List<Runnable> OTHER_REGISTRIES = new ArrayList<>();
 
     /**
      * 初始化所有注册
@@ -29,7 +32,12 @@ public class RegistryHandler {
             registry.register(modEventBus);
         }
 
-        UselessMod.LOGGER.info("已注册 {} 个注册器", REGISTRIES.size());
+        // 注册其他类型的注册器
+        for (Runnable registry : OTHER_REGISTRIES) {
+            registry.run();
+        }
+
+        UselessMod.LOGGER.info("已注册 {} 个标准注册器和 {} 个其他注册器", REGISTRIES.size(), OTHER_REGISTRIES.size());
     }
 
     /**
@@ -58,6 +66,9 @@ public class RegistryHandler {
         // 维度注册
         addRegistry(UselessDimension.CHUNK_GENERATORS);
         addRegistry(UselessDimension2.CHUNK_GENERATORS);
+
+        // 添加 ThermalMore 物品注册（使用特殊处理）
+        addOtherRegistry(() -> ThermalMoreItems.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus()));
     }
 
     /**
@@ -70,9 +81,18 @@ public class RegistryHandler {
     }
 
     /**
+     * 添加其他类型的注册器
+     */
+    private static void addOtherRegistry(Runnable registryTask) {
+        if (registryTask != null) {
+            OTHER_REGISTRIES.add(registryTask);
+        }
+    }
+
+    /**
      * 获取注册器数量（用于调试）
      */
     public static int getRegistryCount() {
-        return REGISTRIES.size();
+        return REGISTRIES.size() + OTHER_REGISTRIES.size();
     }
 }

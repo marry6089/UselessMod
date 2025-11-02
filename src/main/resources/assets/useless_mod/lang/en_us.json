@@ -43,5 +43,16 @@
   "tooltip.useless_mod.festive_affix": "5% 概率在击杀时触发战利品大爆发",
   "tooltip.useless_mod.auto_collect": "自带磁力功能",
   "config.useless_mod.botany_pot_growth_multiplier": "植物盆生长倍率",
-  "config.useless_mod.matrix_pattern_count": "矩阵样板数量倍率"
+  "config.useless_mod.matrix_pattern_count": "矩阵样板数量倍率",
+  "item.useless_mod.useless_integral_component_tier_1": "无用整合组件 等级 1",
+  "item.useless_mod.useless_integral_component_tier_2": "无用整合组件 等级 2",
+  "item.useless_mod.useless_integral_component_tier_3": "无用整合组件 等级 3",
+  "item.useless_mod.useless_integral_component_tier_4": "无用整合组件 等级 4",
+  "item.useless_mod.useless_integral_component_tier_5": "无用整合组件 等级 5",
+  "item.useless_mod.useless_integral_component_tier_6": "无用整合组件 等级 6",
+  "item.useless_mod.useless_integral_component_tier_7": "无用整合组件 等级 7",
+  "item.useless_mod.useless_integral_component_tier_8": "无用整合组件 等级 8",
+  "item.useless_mod.useless_integral_component_tier_9": "无用整合组件 等级 9",
+  "useless_mod.augment.upgrade": "升级增强",
+  "info.useless_mod.lava_gen_nether": "在下界工作"
 }

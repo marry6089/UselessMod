@@ -134,6 +134,11 @@ repositories {
         name = "BlameJared"
         url = "https://maven.blamejared.com"
     }
+
+    maven {
+        name 'Thermal Maven'
+        url 'https://maven.covers1624.net/'
+    }
     //maven { url 'https://maven.mekanism.io/' } // Mekanism official Maven
 }
 
@@ -153,6 +158,7 @@ dependencies {
     implementation fg.deobf("curse.maven:thermal_foundation-222880:5443583") // thermal_foundation-1.20.1-11.0.6.70
     implementation fg.deobf("curse.maven:thermal_expansion-69163:5372749") // thermal_expansion-1.20.1-11.0.1.29
     implementation fg.deobf("curse.maven:cofh_core-69162:5374122") // cofh_core-1.20.1-11.0.2.56
+    implementation fg.deobf("com.teamcofh:thermal_core:1.20.1-11.0.7.25")
     implementation fg.deobf("curse.maven:TravelAnchors-413234:4683662") // TravelAnchors-1.20.1-5.0.1
     implementation fg.deobf("curse.maven:LibX-412525:4947474") // LibX-1.20.1-5.0.12
     implementation fg.deobf("curse.maven:jecharacters-250702:6680042") // jecharacters-1.20.1-forge-4.5.16
@@ -163,6 +169,10 @@ dependencies {
     implementation fg.deobf("curse.maven:extendedae_plus-1337639:7068596") // extendedae_plus-1.4.4
     implementation fg.deobf("curse.maven:mekanism_extras-1026040:6936409") // mekanism_extras-1.20.1-1.4.6
     implementation fg.deobf("curse.maven:ThermalMore-1078644:5704624") // ThermalMore-1.1.2-1.20.1
+    implementation fg.deobf("curse.maven:ftb-ultimine-386134:6899418") // ftb-ultimine-forge-2001.1.7
+    implementation fg.deobf("curse.maven:Architectury-API-419699:5137938") // Architectury API
+    implementation fg.deobf("curse.maven:ftb-library-API-404465:6807424") // ftb-library-forge-2001.2.10
+    implementation fg.deobf("curse.maven:thermal_parallel-1.0.0-1350169:7013612") // thermal_parallel-1.0.0
 
 
     //exendedae前置
