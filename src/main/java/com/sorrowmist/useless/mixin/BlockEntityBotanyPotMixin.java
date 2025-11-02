@@ -173,8 +173,6 @@ public abstract class BlockEntityBotanyPotMixin {
                     // 检查是否成功插入
                     if (remainingStack.getCount() < beforeInsert.getCount()) {
                         exportedAny = true;
-                        System.out.println("成功输出物品: " + beforeInsert.getDisplayName().getString() +
-                                " 数量: " + (beforeInsert.getCount() - remainingStack.getCount()));
                     }
 
                     // 如果物品完全输出，跳出循环
@@ -188,10 +186,8 @@ public abstract class BlockEntityBotanyPotMixin {
             if (remainingStack.getCount() != originalCount) {
                 if (remainingStack.isEmpty()) {
                     potInventory.setItem(potSlot, ItemStack.EMPTY);
-                    System.out.println("清空槽位: " + potSlot);
                 } else {
                     potInventory.setItem(potSlot, remainingStack);
-                    System.out.println("更新槽位: " + potSlot + " 剩余: " + remainingStack.getCount());
                 }
             }
         }
@@ -199,7 +195,6 @@ public abstract class BlockEntityBotanyPotMixin {
         // 如果有物品被输出，标记为脏以保存更改
         if (exportedAny) {
             pot.markDirty();
-            System.out.println("输出完成，标记为脏");
         }
     }
 

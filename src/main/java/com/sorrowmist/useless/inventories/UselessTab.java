@@ -7,6 +7,7 @@ import com.sorrowmist.useless.blocks.TeleportBlock;
 import com.sorrowmist.useless.blocks.TeleportBlock2;
 import com.sorrowmist.useless.items.EndlessBeafItem;
 import com.sorrowmist.useless.registry.ThermalMoreItems;
+import com.sorrowmist.useless.registry.ThermalParallelItems;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -18,7 +19,6 @@ import net.minecraftforge.registries.RegistryObject;
 public class UselessTab {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_TAB =
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, UselessMod.MOD_ID);
-
 
     public static final RegistryObject<CreativeModeTab> USELESS_TAB =
             CREATIVE_TAB.register("useless_tab", () -> CreativeModeTab.builder()
@@ -42,6 +42,10 @@ public class UselessTab {
                         pOutput.accept(ThermalMoreItems.USELESS_INTEGRAL_COMPONENT_TIER_7.get());
                         pOutput.accept(ThermalMoreItems.USELESS_INTEGRAL_COMPONENT_TIER_8.get());
                         pOutput.accept(ThermalMoreItems.USELESS_INTEGRAL_COMPONENT_TIER_9.get());
+                        // 添加 Thermal Parallel 增强物品
+                        pOutput.accept(ThermalParallelItems.AUGMENT_PARALLEL_1.get());
+                        pOutput.accept(ThermalParallelItems.AUGMENT_PARALLEL_2.get());
+                        pOutput.accept(ThermalParallelItems.AUGMENT_PARALLEL_3.get());
                     }))
                     .build());
 }

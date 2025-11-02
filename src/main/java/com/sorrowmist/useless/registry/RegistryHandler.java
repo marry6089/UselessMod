@@ -67,8 +67,11 @@ public class RegistryHandler {
         addRegistry(UselessDimension.CHUNK_GENERATORS);
         addRegistry(UselessDimension2.CHUNK_GENERATORS);
 
-        // 添加 ThermalMore 物品注册（使用特殊处理）
+        // 添加 ThermalMore 物品注册
         addOtherRegistry(() -> ThermalMoreItems.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus()));
+
+        // 添加 ThermalParallel 物品注册
+        addOtherRegistry(() -> ThermalParallelItems.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus()));
     }
 
     /**

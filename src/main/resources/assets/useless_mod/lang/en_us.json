@@ -54,5 +54,18 @@
   "item.useless_mod.useless_integral_component_tier_8": "无用整合组件 等级 8",
   "item.useless_mod.useless_integral_component_tier_9": "无用整合组件 等级 9",
   "useless_mod.augment.upgrade": "升级增强",
-  "info.useless_mod.lava_gen_nether": "在下界工作"
+  "info.useless_mod.lava_gen_nether": "在下界工作",
+  "info.thermal.augment.attr.MachineParallel": "最大并行数",
+  "item.useless_mod.augment_parallel_1": "并行处理增强 I",
+  "item.useless_mod.augment_parallel_2": "并行处理增强 II",
+  "item.useless_mod.augment_parallel_3": "并行处理增强 III",
+  "config.useless_mod.parallel_increase_energy_consumption": "并行增加能耗",
+  "config.useless_mod.base_mod_affect_parallel": "基础倍率影响并行",
+  "config.useless_mod.add_extra_parallel_augments_to_tab": "添加额外并行增强到标签",
+  "config.useless_mod.parallel_increase_item_cap": "并行增加物品容量",
+  "config.useless_mod.parallel_increase_fluid_cap": "并行增加流体容量",
+  "config.useless_mod.parallel_increase_energy_cap": "并行增加能量容量",
+  "config.useless_mod.parallel_increase_item_transfer": "并行增加物品传输",
+  "config.useless_mod.parallel_increase_fluid_transfer": "并行增加流体传输",
+  "config.useless_mod.parallel_increase_energy_transfer": "并行增加能量传输"
 }
