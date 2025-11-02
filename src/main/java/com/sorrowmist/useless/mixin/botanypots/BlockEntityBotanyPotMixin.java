@@ -49,17 +49,19 @@ public abstract class BlockEntityBotanyPotMixin {
         // 正常加速生长模式
         if (actualTime >= 1) {
             int growthThisTick = Math.max(1, multiplier);
-            for (int i = 0; i < growthThisTick; i++) {
-                pot.addGrowth(1);
-                if (pot.getGrowthTime() >= requiredTime) {
-                    accessor.setDoneGrowing(true);
-                    // 检查是否可以收获
-                    if (hasOutputSpace(level, pos, pot)) {
-                        performHarvestToContainers(level, pos, pot, rng);
-                        pot.resetGrowth();
-                    }
-                    break;
+            int currentGrowth = pot.getGrowthTime();
+            int newGrowth = currentGrowth + growthThisTick;
+            if (newGrowth >= requiredTime) {
+                // 只增长到requiredTime，然后收获重置
+                pot.addGrowth(requiredTime - currentGrowth);
+                accessor.setDoneGrowing(true);
+                if (hasOutputSpace(level, pos, pot)) {
+                    performHarvestToContainers(level, pos, pot, rng);
+                    pot.resetGrowth();
                 }
+            } else {
+                // 直接增长growthThisTick
+                pot.addGrowth(growthThisTick);
             }
             return;
         }
