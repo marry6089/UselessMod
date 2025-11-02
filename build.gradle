@@ -162,6 +162,7 @@ dependencies {
     implementation fg.deobf("curse.maven:configured-457570:5180900") // configured-forge-1.20.1-2.2.3
     implementation fg.deobf("curse.maven:extendedae_plus-1337639:7068596") // extendedae_plus-1.4.4
     implementation fg.deobf("curse.maven:mekanism_extras-1026040:6936409") // mekanism_extras-1.20.1-1.4.6
+    implementation fg.deobf("curse.maven:ThermalMore-1078644:5704624") // ThermalMore-1.1.2-1.20.1
 
 
     //exendedae前置
