@@ -1,4 +1,4 @@
-package com.sorrowmist.useless.mixin;
+package com.sorrowmist.useless.mixin.botanypots;
 
 import com.sorrowmist.useless.config.ConfigManager;
 import com.sorrowmist.useless.mixin.accessor.BlockEntityBotanyPotAccessor;
@@ -20,6 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 import java.util.Random;
 
+@SuppressWarnings({"AddedMixinMembersNamePattern"})
 @Mixin(BlockEntityBotanyPot.class)
 public abstract class BlockEntityBotanyPotMixin {
 
@@ -31,23 +32,23 @@ public abstract class BlockEntityBotanyPotMixin {
     )
     private static void onTickPot(Level level, BlockPos pos, BlockState state, BlockEntityBotanyPot pot, CallbackInfo ci) {
         // 获取配置的生长倍率
-        float multiplier = ConfigManager.getBotanyPotGrowthMultiplier();
-        if (multiplier <= 1.0f) return;
+        int multiplier = ConfigManager.getBotanyPotGrowthMultiplier();
 
         // 检查生长条件
         if (pot.getCrop() == null || pot.getSoil() == null || !pot.areGrowthConditionsMet()) return;
 
-        BotanyPotContainer inv = (BotanyPotContainer) pot.getInventory();
+        BotanyPotContainer inv = pot.getInventory();
         int requiredTime = inv.getRequiredGrowthTime();
         if (requiredTime <= 0) requiredTime = 1;
 
-        float actualTime = requiredTime / multiplier;
+        int actualTime = requiredTime / multiplier;
+
         BlockEntityBotanyPotAccessor accessor = (BlockEntityBotanyPotAccessor) pot;
         Random rng = accessor.getRng();
 
         // 正常加速生长模式
-        if (actualTime >= 1.0f) {
-            int growthThisTick = Math.max(1, (int) multiplier);
+        if (actualTime >= 1) {
+            int growthThisTick = Math.max(1, multiplier);
             for (int i = 0; i < growthThisTick; i++) {
                 pot.addGrowth(1);
                 if (pot.getGrowthTime() >= requiredTime) {
@@ -131,7 +132,7 @@ public abstract class BlockEntityBotanyPotMixin {
      * 检查自身物品栏是否有空间
      */
     private static boolean hasSpaceInSelf(BlockEntityBotanyPot pot) {
-        BotanyPotContainer potInventory = (BotanyPotContainer) pot.getInventory();
+        BotanyPotContainer potInventory = pot.getInventory();
         for (int slot : BotanyPotContainer.STORAGE_SLOT) {
             ItemStack stackInSlot = potInventory.getItem(slot);
             if (stackInSlot.isEmpty() || stackInSlot.getCount() < stackInSlot.getMaxStackSize()) {

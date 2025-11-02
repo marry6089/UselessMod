@@ -18,7 +18,7 @@ public class ConfigManager {
     public static final ForgeConfigSpec.ConfigValue<String> CENTER_BLOCK;
 
     // 植物盆生长速度配置
-    public static final ForgeConfigSpec.DoubleValue BOTANY_POT_GROWTH_MULTIPLIER;
+    public static final ForgeConfigSpec.IntValue BOTANY_POT_GROWTH_MULTIPLIER;
 
     // 矩阵样板数量配置
     public static final ForgeConfigSpec.IntValue MATRIX_PATTERN_COUNT;
@@ -60,8 +60,8 @@ public class ConfigManager {
         BUILDER.push("游戏机制设置");
 
         BOTANY_POT_GROWTH_MULTIPLIER = BUILDER
-                .comment("植物盆生长倍率 - 1.0为原版速度，2.0为2倍速度，0.5为半速")
-                .defineInRange("植物盆生长倍率", 1.0, 0.1, Double.MAX_VALUE);
+                .comment("植物盆生长倍率 - 1.0为原版速度，2.0为2倍速度")
+                .defineInRange("植物盆生长倍率", 1, 1, Integer.MAX_VALUE);
 
         MATRIX_PATTERN_COUNT = BUILDER
                 .comment("矩阵样板槽位倍数 - 减少数量时请保持槽位空！否则可能会造成样板丢失")
@@ -146,8 +146,8 @@ public class ConfigManager {
     }
 
     // 获取配置值方法
-    public static float getBotanyPotGrowthMultiplier() {
-        return BOTANY_POT_GROWTH_MULTIPLIER.get().floatValue();
+    public static int getBotanyPotGrowthMultiplier() {
+        return BOTANY_POT_GROWTH_MULTIPLIER.get();
     }
 
     public static int getMatrixPatternCount() {

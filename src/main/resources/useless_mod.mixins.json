@@ -11,9 +11,9 @@
     "defaultRequire": 1
   },
   "mixins": [
-    "BlockEntityBotanyPotMixin",
+    "botanypots.BlockEntityBotanyPotMixin",
     "BlockTravelAnchorMixin",
-    "BotanyPotsForgeClientMixin",
+    "botanypots.BotanyPotsForgeClientMixin",
     "PatternSlotTrackerMixin",
     "TileAssemblerMatrixPatternMixin",
     "TileComponentEjectorMixin",

@@ -1,4 +1,4 @@
-package com.sorrowmist.useless.mixin;
+package com.sorrowmist.useless.mixin.botanypots;
 
 import net.darkhax.botanypots.BotanyPotsForgeClient;
 import net.minecraftforge.client.event.EntityRenderersEvent;
